@@ -1,5 +1,5 @@
 ---
-title: "Spatial Notes"
+title: "HW04-1"
 author: "Michael Nielsen"
 date: "31 May 2018"
 output: html_document
