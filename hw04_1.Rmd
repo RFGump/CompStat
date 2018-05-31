@@ -1,1 +1,92 @@
+Let X1,X2, ... be a Metropolis-Hastings chain on the real line with a Gaussian
+random walk proposal distribution with standard deviation δ. Consider as sta-
+tionary distributions a standard normal distribution and Gamma distributions
+with shape parameters α = 1; 5; 10; 20 and scale chosen to give the Gamma dis-
+tribution a variance equal to one. Conduct a simulation experiment to explore
+the effect of varying δ on the performance of the sample path average as an es-
+timator of the mean of the stationary distribution. Based on your experiments
+can you make a general recommendation on the choice of δ in other problems?
+You may find it useful to keep track of the acceptance rate, the proportion of
+steps where the proposal is accepted.
+
+#------------------------------------------------------------------------------
+# Metropolis-Hastings Simulation
+#------------------------------------------------------------------------------
+metro2<-function(delta=1,N=1000,fun=1,start=0){
+  # delta is standard deviation of normal random walk
+  # N is the number of iterations
+  # fun is the density function we wish to simulate
+  # start is the starting point
+  
+  if (fun==1) lnR <- function(alpha,beta,newX,X) .5*(X^2-newX^2)
+         else lnR <- function(alpha,beta,newX,X) alpha * (log(newX) - log(X))
+                                                 - 1/beta * (newX - X)
+
+  if (fun==2) {alpha = 1; beta = sqrt(1)} # true mean = 1
+  if (fun==3) {alpha = 5; beta = sqrt(1/5)} # true mean = 2.236068
+  if (fun==4) {alpha = 10; beta = sqrt(1/10)} # true mean = 3.162278
+  if (fun==5) {alpha = 20; beta = sqrt(1/20)} # true mean = 4.472136
+
+  out <- double(N)
+  if (fun==1) X <- start else X <- exp(start)
+  out[1] <- X
+  accept <- 0
+  
+  for(i in 2:N){
+    if (fun==1) newX <- rnorm(1,mean=X,sd=delta)
+      else newX <- exp(rnorm(1,mean=log(X),sd=delta))
+
+    logRatio <- lnR(alpha,beta,newX,X)
+    
+    if(is.finite(logRatio) && log(runif(1)) < logRatio) {
+      X<-newX
+      accept<-accept+1
+    }
+  out[i]<-X
+  }
+
+list(x=out,arate=accept/N)
+
+}
+
+#------------------------------------------------------------------------------
+# generate data for empirical density plots (N=10000, delta=1)
+#------------------------------------------------------------------------------
+
+set.seed(12351)
+  x1<-metro2(delta=1,N=10000,fun=1,start=2.5)
+  x2<-metro2(delta=1,N=10000,fun=2,start=2.5)
+  x3<-metro2(delta=1,N=10000,fun=3,start=2.5)
+  x4<-metro2(delta=1,N=10000,fun=4,start=2.5)
+  x5<-metro2(delta=1,N=10000,fun=5,start=2.5)
+
+#------------------------------------------------------------------------------
+# Measure the effect of varying delta (N=10000)
+#------------------------------------------------------------------------------
+
+g<-function(d,f,n){
+  v<-length(d)
+  mean<-matrix(double(n*v),ncol=v)
+  arate<-matrix(double(n*v),ncol=v)
+  for (i in 1:n){       # i: row = replicate
+    for (j in 1:v) {    # j: column = variance_j
+      sample<-metro2(d[j],10000,f,3)
+      mean[i,j]<-mean(sample$x)
+      arate[i,j]<-sample$arate
+    }
+  }
+list(mean=mean,arate=arate)
+}
+
+true<-c(0,1,5/sqrt(5),10/sqrt(10),20/sqrt(20))
+
+set.seed(1243)
+delta<-seq(.1,10,len=20)
+reps<-10
+
+out1<-g(delta,1,reps)
+out2<-g(delta,2,reps)
+out3<-g(delta,3,reps)
+out4<-g(delta,4,reps)
+out5<-g(delta,5,reps)
 
