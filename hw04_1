@@ -1,0 +1,10 @@
+Let X1,X2, ... be a Metropolis-Hastings chain on the real line with a Gaussian
+random walk proposal distribution with standard deviation δ. Consider as sta-
+tionary distributions a standard normal distribution and Gamma distributions
+with shape parameters α = 1; 5; 10; 20 and scale chosen to give the Gamma dis-
+tribution a variance equal to one. Conduct a simulation experiment to explore
+the effect of varying δ on the performance of the sample path average as an es-
+timator of the mean of the stationary distribution. Based on your experiments
+can you make a general recommendation on the choice of δ in other problems?
+You may find it useful to keep track of the acceptance rate, the proportion of
+steps where the proposal is accepted.
