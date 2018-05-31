@@ -8,7 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
+# Problem Statement
 Let $X_1,X_2,...$ be a Metropolis-Hastings chain on the real line with a Gaussian
 random walk proposal distribution with standard deviation $\delta$. Consider as 
 stationary distributions a standard normal distribution and Gamma distributions
@@ -21,7 +21,7 @@ You may find it useful to keep track of the acceptance rate, the proportion of
 steps where the proposal is accepted.
 
 --------------------------------------------------------------------------
-# Metropolis-Hastings Simulation
+# The Solution
 
 ```{r}
 metro2 <- function(delta=1,N=1000,fun=1,start=0){
