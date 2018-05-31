@@ -1,4 +1,15 @@
-Let $X_1,X_2, ...$ be a Metropolis-Hastings chain on the real line with a Gaussian
+---
+title: "Spatial Notes"
+author: "Michael Nielsen"
+date: "31 May 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Let $X_1,X_2,...$ be a Metropolis-Hastings chain on the real line with a Gaussian
 random walk proposal distribution with standard deviation $\delta$. Consider as 
 stationary distributions a standard normal distribution and Gamma distributions
 with shape parameters $\alpha$ = 1; 5; 10; 20 and scale chosen to give the Gamma dis-
@@ -13,7 +24,7 @@ steps where the proposal is accepted.
 # Metropolis-Hastings Simulation
 
 ```{r}
-metro2<-function(delta=1,N=1000,fun=1,start=0){
+metro2 <- function(delta=1,N=1000,fun=1,start=0){
   # delta is standard deviation of normal random walk
   # N is the number of iterations
   # fun is the density function we wish to simulate
