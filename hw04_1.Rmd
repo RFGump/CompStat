@@ -76,6 +76,7 @@ set.seed(12351)
 ------------------------------------------------------------------------------
 # Measure the effect of varying delta (N=10000)
 
+```{r}
 g<-function(d,f,n){
   v<-length(d)
   mean<-matrix(double(n*v),ncol=v)
@@ -101,4 +102,4 @@ out2<-g(delta,2,reps)
 out3<-g(delta,3,reps)
 out4<-g(delta,4,reps)
 out5<-g(delta,5,reps)
-
+```
